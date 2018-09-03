@@ -1,0 +1,25 @@
+{
+    "name": "truesocialmetrics/2checkout-api",
+    "type": "library",
+    "description": "2checkout New API based on Avangate",
+    "keywords": ["2checkout", "avangate", "api"],
+    "homepage": "https://github.com/truesocialmetrics/2checkout-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rostislav Mykhajliw",
+            "email": "necromant2005@gmail.com",
+            "homepage": "https://github.com/necromant2005",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Twee\\TwoCheckout\\": "src/TwoCheckout/"
+        }
+    }
+}
