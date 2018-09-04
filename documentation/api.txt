@@ -1,1 +1,18 @@
 https://knowledgecenter.2checkout.com/Integration/REST_5.0_Reference
+
+Authentication
+To authenticate to the 2Checkout REST API include a header with the following structure into your requests:
+X-Avangate-Authentication: code="{VENDOR_CODE}" date="{REQUEST_DATE_TIME}" hash="{HASH}"
+
+Alternativelly,use:
+X-Avangate-Authentication: code='{VENDOR_CODE}' date='{REQUEST_DATE_TIME}' hash='{HASH}'
+
+VENDOR_CODE: Your unique 2Checkout supplied merchant code.
+
+REQUEST_DATE_TIME: The UTC date time of the request.
+Format: YYYY-MM-DD HH:MM:SS. You must provide the time of the request in the GMT timezone.
+
+HASH: The hashmac digest with an md5 hashing algorithm of the following:
+LEN(VENDOR_CODE) + VENDOR_CODE + LEN(REQUEST_DATE_TIME) + REQUEST_DATE_TIME.
+
+Use the secret key associated with your account for the hashing.

@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "ext-curl": "*"
+        "zendframework/zend-http": "*"
     },
     "autoload": {
         "psr-4": {
