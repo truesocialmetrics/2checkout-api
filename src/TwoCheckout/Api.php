@@ -20,7 +20,7 @@ final class Api
     public function __construct(string $vendorCode)
     {
         $this->vendorCode = $vendorCode;
-        $this->httpClient =
+        $this->httpClient = new HttpClient();
     }
 
     private function generateRequestDateTime()
