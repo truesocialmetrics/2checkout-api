@@ -7,6 +7,7 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Http\Header as HttpHeader;
 
 use RuntimeException;
+use UnderflowException;
 
 final class Api
 {
@@ -15,43 +16,38 @@ final class Api
     const METHOD_GET = 'get';
 
     private $vendorCode = '';
+    private $secretCode = '';
+
     private $httpClient = null;
 
-    public function __construct(string $vendorCode)
+    public function __construct(string $vendorCode, string $secretCode)
     {
         $this->vendorCode = $vendorCode;
+        $this->secretCode = $secretCode;
+
         $this->httpClient = new HttpClient();
     }
 
-    private function generateRequestDateTime()
+    public function rest(string $type, string $subUri, array $params) : array
     {
-        // YYYY-MM-DD HH:MM:SS
-        return date('Y-m-d H:i:s', time());
-    }
-
-    private function generateHash(string $requestDateTime)
-    {
-        return md5(((string) strlen($this->vendorCode)) . $this->vendorCode . ((string) strlen($requestDateTime)) . $requestDateTime);
-    }
-
-    public function rest(string $type, string $subUri, array $params)
-    {
-        $requestDateTime = $this->generateRequestDateTime();
-        $hash = $this->generateHash($requestDateTime);
-
-        $authentificationCode = 'code="' . $this->vendorCode . '" date="' . $requestDateTime . '" hash="' . $hash .'"';
+        $code = $this->vendorCode;
+        $key  = $this->secretCode;
+        $date = gmdate('Y-m-d H:i:s', time());
+        $hash = hash_hmac('md5', strlen($code) . $code . strlen($date) . $date, $key);
 
         $url = self::ENDPOINT . $subUri;
         if ($type == self::METHOD_GET) {
             $url = $url . '?' . http_build_query($params);
         }
 
-        $this->httpClient->setUri(new Uri($url));
+        $this->httpClient->setUri($url);
         $this->httpClient->setOptions([
             'sslverifypeer' => false,
         ]);
         $this->httpClient->setHeaders([
-            new HttpHeader\GenericHeader('X-Avangate-Authentication', 'code="' . $this->vendorCode . '" date="{REQUEST_DATE_TIME}" hash="{HASH}"'),
+            new HttpHeader\GenericHeader('X-Avangate-Authentication', 'code="' . $code . '" date="' . $date . '" hash="' . $hash . '"'),
+            new HttpHeader\Accept('application/json'),
+            new HttpHeader\ContentType('application/json'),
         ]);
 
         $response = $this->httpClient->send();
@@ -60,6 +56,11 @@ final class Api
             throw new RuntimeException('http error', $response->getStatusCode(), new RuntimeException($response->getBody()));
         }
 
-        return json_decode($response->getBody(), true);
+        $decoded = json_decode($response->getBody(), true);
+        if ($decoded === false) {
+            throw new UnderflowException('Response cant be decoded');
+        }
+
+        return $decoded;
     }
 }

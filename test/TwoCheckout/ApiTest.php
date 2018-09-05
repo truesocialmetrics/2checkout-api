@@ -6,7 +6,7 @@ use ReflectionMethod;
 
 class ApiTest extends TestCase
 {
-    public function testGenerateRequestDateTime()
+    public function t_estGenerateRequestDateTime()
     {
         $api = new Api('TopSecretCode');
 
@@ -16,7 +16,7 @@ class ApiTest extends TestCase
         $this->assertEquals(date('Y-m-d H:i:s', time()), $method->invoke($api));
     }
 
-    public function testGenerateHash()
+    public function t_estGenerateHash()
     {
         $api = new Api('TopSecretCode');
 
