@@ -51,7 +51,7 @@ final class Api
             new HttpHeader\ContentType('application/json'),
         ]);
         if ($type == self::METHOD_DELETE) {
-            $this->httpClient->setMethod(HttpRequest::METHOD_POST);
+            $this->httpClient->setMethod(HttpRequest::METHOD_DELETE);
         }
 
         $response = $this->httpClient->send();
@@ -65,6 +65,6 @@ final class Api
             throw new UnderflowException('Response cant be decoded');
         }
 
-        return $decoded;
+        return (array) $decoded;
     }
 }
