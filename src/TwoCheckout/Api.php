@@ -14,6 +14,7 @@ final class Api
     const ENDPOINT = 'https://api.2checkout.com/rest/5.0';
 
     const METHOD_GET = 'get';
+    const METHOD_DELETE = 'delete';
 
     private $vendorCode = '';
     private $secretCode = '';
@@ -49,6 +50,9 @@ final class Api
             new HttpHeader\Accept('application/json'),
             new HttpHeader\ContentType('application/json'),
         ]);
+        if ($type == self::METHOD_DELETE) {
+            $this->httpClient->setMethod(HttpRequest::METHOD_POST);
+        }
 
         $response = $this->httpClient->send();
 
