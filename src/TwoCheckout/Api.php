@@ -11,6 +11,13 @@ use UnderflowException;
 
 final class Api
 {
+    private const HTTP_CLIENT_OPTIONS = [
+        'useragent'     => 'Mozilla/5.0 (compatible; truesocialmetrics)',
+        'adapter'       => 'Zend\Http\Client\Adapter\Curl',
+        'sslverifypeer' => false,
+        'timeout'       => 15,
+    ];
+
     const ENDPOINT = 'https://api.2checkout.com/rest/5.0';
 
     const METHOD_GET = 'get';
@@ -42,9 +49,7 @@ final class Api
         }
 
         $this->httpClient->setUri($url);
-        $this->httpClient->setOptions([
-            'sslverifypeer' => false,
-        ]);
+        $this->httpClient->setOptions(self::HTTP_CLIENT_OPTIONS);
         $this->httpClient->setHeaders([
             new HttpHeader\GenericHeader('X-Avangate-Authentication', 'code="' . $code . '" date="' . $date . '" hash="' . $hash . '"'),
             new HttpHeader\Accept('application/json'),
