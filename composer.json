@@ -14,8 +14,8 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "zendframework/zend-http": "*"
+        "php": ">=7.4.0",
+        "laminas/laminas-http": "*"
     },
     "autoload": {
         "psr-4": {

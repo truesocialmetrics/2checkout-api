@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace Twee\TwoCheckout;
 
-use Zend\Http\Client as HttpClient;
-use Zend\Http\Request as HttpRequest;
-use Zend\Http\Header as HttpHeader;
+use Laminas\Http\Client as HttpClient;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Http\Header as HttpHeader;
 
 use RuntimeException;
 use UnderflowException;
@@ -13,7 +13,7 @@ final class Api
 {
     private const HTTP_CLIENT_OPTIONS = [
         'useragent'     => 'Mozilla/5.0 (compatible; truesocialmetrics)',
-        'adapter'       => 'Zend\Http\Client\Adapter\Curl',
+        'adapter'       => 'Laminas\Http\Client\Adapter\Curl',
         'sslverifypeer' => false,
         'timeout'       => 15,
     ];
